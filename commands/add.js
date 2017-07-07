@@ -1,17 +1,26 @@
 const fs = require('fs');
-const task_path = './task.json';
+// CamelCase is the convention in Node and JavaScript
+// use __dirname to create an absolute path
+const taskPath = __dirname+'/../task.json';
 
-module.exports = function(){
-  fs.readFile(task_path, 'utf8', (err, data) => {
-    if (err) throw err;
-    working_file = JSON.parse(data);
-    working_id = parseInt(working_file.idCount)+1;
-    working_file.idCount = working_id
-    working_file.tasks.push({"id": working_file.idCount, "description": process.argv[3]});
-    working_file = JSON.stringify(working_file)
-    fs.writeFile('task.json', working_file, (err) => {
-      if (err) throw err;
-      console.log('Created task ' + working_id + '.');
+module.exports = function(description){
+  // I strongly suggest you use full, verbose, variable names.
+  // error is preferrable over err IMHO
+  fs.readFile(task_path, 'utf8', (error, json) => {
+    if (error) throw error;
+    // OOOPS You forgot `const` or `let`
+    const data = JSON.parse(json);
+    // use Number.parseInt instead of parseInt
+    data.idCount = Number.parseInt(data.idCount)+1;
+    // I would rename `idCount` to `latestID` or something, its not really a counter
+    data.tasks.push({
+      id: data.idCount, 
+      description: description,
+    });
+    json = JSON.stringify(data)
+    fs.writeFile('task.json', json, (error) => {
+      if (error) throw error;
+      console.log('Created task ' + id + '.');
     })
   })
 }
