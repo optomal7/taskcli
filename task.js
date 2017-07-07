@@ -1,21 +1,24 @@
 const fs = require('fs');
-const listing = require('./commands/list.js');
-const adding = require('./commands/add.js');
-const doing = require('./commands/done.js');
+// stay consistant with your naming
+const list = require('./commands/list.js');
+const add = require('./commands/add.js');
+const done = require('./commands/done.js');
 const task_path = './task.json';
 
-let working_file = null;
-let working_id = null;
+// remove these unused variables
 
+// store process.argv[2] in a varaible instead of accessing that prop 3 times
+const command = process.argv[2]
+const argument = process.argv[3]
 
-if(process.argv[2] === 'list'){
-  listing();
+if(command === 'list'){
+  list();
 }
 
-if (process.argv[2] === 'add') {
-  adding();
+if (command === 'add') {
+  add(argument)
 }
 
-if (process.argv[2] === 'done') {
-  doing();
+if (command === 'done') {
+  done(argument)
 }
