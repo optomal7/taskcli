@@ -1,14 +1,20 @@
 
 const fs = require('fs');
-const task_path = './task.json';
+// consolidate this duplication
+const taskPath = './task.json';
 
 module.exports = function (){
-  fs.readFile(task_path, 'utf8', (err, data) => {
-    if (err) throw err;
-    console.log(JSON.parse(data).header);
-    JSON.parse(data).tasks.forEach(function (todo){
+  fs.readFile(taskPath, 'utf8', (error, json) => {
+    if (error) throw error;
+    // dont parse twice
+    const data = JSON.parse(json)
+    // you shouldn't store this header information in the tasks.json
+    // it is not state
+    console.log("ID Description")
+    console.log("-- -----------")
+    data.tasks.forEach(function(todo){
       console.log(todo.id + ' ' + todo.description);
     });
-    console.log('\n' + JSON.parse(data).tasks.length + ' tasks.');
+    console.log('\n' + data.tasks.length + ' tasks.');
   })
 }
